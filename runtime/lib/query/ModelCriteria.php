@@ -38,6 +38,7 @@ class ModelCriteria extends Criteria
 	const FORMAT_ON_DEMAND = 'PropelOnDemandFormatter';
 
 	protected $modelName;
+	protected $modelShortName;
 	protected $modelPeerName;
 	protected $modelAlias;
 	protected $useAliasInSQL = false;
@@ -64,6 +65,8 @@ class ModelCriteria extends Criteria
 		$this->setDbName($dbName);
 		$this->originalDbName = $dbName;
 		$this->modelName = $modelName;
+		$nsParts=explode('\\',$modelName);
+		$this->modelShortName = array_pop($nsParts);
 		$this->modelPeerName = constant($this->modelName . '::PEER');
 		$this->modelAlias = $modelAlias;
 		$this->tableMap = Propel::getDatabaseMap($this->getDbName())->getTableByPhpName($this->modelName);
@@ -115,7 +118,7 @@ class ModelCriteria extends Criteria
 	 */
 	public function getModelAliasOrName()
 	{
-		return $this->modelAlias ? $this->modelAlias : $this->modelName;
+		return $this->modelAlias ? $this->modelAlias : $this->modelShortName;
 	}
 
 	/**
